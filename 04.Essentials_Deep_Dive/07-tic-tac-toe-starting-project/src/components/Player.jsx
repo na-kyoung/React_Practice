@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-export default function Player({initialName, symbol, isActive }) {
+export default function Player({initialName, symbol, isActive, onChangeName }) {
+    console.log('Player Start!');
     const [ isEditing, setIsEditing ] = useState(false); // 버튼 상태
     const [ playerName, setPlayerName ] = useState(initialName); // 플레이어 이름
 
@@ -10,6 +11,10 @@ export default function Player({initialName, symbol, isActive }) {
         // setIsEditing(!isEditing);
         setIsEditing((editing) => !editing);
         // setIsEditing((editing) => !editing);
+
+        if(isEditing){ // 수정됐을 때 App 컴포넌트에 심볼,이름 보내기
+            onChangeName(symbol, playerName);
+        }
     }
 
     // 플레이어 이름 변경

@@ -1,4 +1,5 @@
 export default function Log({ turns }) {
+    console.log('Log Start!');
     
     return (
         <ol id="log">
