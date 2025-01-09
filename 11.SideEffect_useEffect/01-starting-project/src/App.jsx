@@ -15,7 +15,8 @@ const storedPlaces = storedIds.map((id) =>
 
 function App() {
   // 상태 초기화
-  const modal = useRef();
+  // const modal = useRef();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const selectedPlace = useRef();
   const [pickedPlaces, setPickedPlaces] = useState(storedPlaces);
   const [availablePlaces, setAvailablePlaces] = useState([]);
@@ -33,13 +34,18 @@ function App() {
     });
   }, []);
 
+  // 삭제 모달창 띄우기
   function handleStartRemovePlace(id) {
-    modal.current.open();
+    // modal.current.open();
+    setModalIsOpen(true);
+
     selectedPlace.current = id;
   }
 
+  // 삭제 모달창 닫기
   function handleStopRemovePlace() {
-    modal.current.close();
+    // modal.current.close();
+    setModalIsOpen(false);
   }
 
   // 장소 선택
@@ -64,7 +70,8 @@ function App() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
-    modal.current.close();
+    // modal.current.close();
+    setModalIsOpen(false);
 
     // 브라우저에 데이터 삭제
     const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || []; // 데이터 가져오기
@@ -76,7 +83,7 @@ function App() {
 
   return (
     <>
-      <Modal ref={modal}>
+      <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
           onConfirm={handleRemovePlace}
