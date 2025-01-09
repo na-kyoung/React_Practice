@@ -7,10 +7,17 @@ import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import { sortPlacesByDistance } from './loc.js';
 
+// 브라우저에 저장된 선택된 장소 조회
+const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
+const storedPlaces = storedIds.map((id) =>
+  AVAILABLE_PLACES.find((place) => place.id === id)
+);
+
 function App() {
+  // 상태 초기화
   const modal = useRef();
   const selectedPlace = useRef();
-  const [pickedPlaces, setPickedPlaces] = useState([]);
+  const [pickedPlaces, setPickedPlaces] = useState(storedPlaces);
   const [availablePlaces, setAvailablePlaces] = useState([]);
 
   // 컴포넌트 초기실행시 한번 실행
@@ -18,15 +25,13 @@ function App() {
     // 사용자 위치 파악
     navigator.geolocation.getCurrentPosition((position) => {
       const sortedPlaces = sortPlacesByDistance(
-        AVAILABLE_PLACES, 
-        position.coords.latitude, 
+        AVAILABLE_PLACES,
+        position.coords.latitude,
         position.coords.longitude);
 
       setAvailablePlaces(sortedPlaces);
     });
   }, []);
-
-
 
   function handleStartRemovePlace(id) {
     modal.current.open();
@@ -37,6 +42,7 @@ function App() {
     modal.current.close();
   }
 
+  // 장소 선택
   function handleSelectPlace(id) {
     setPickedPlaces((prevPickedPlaces) => {
       if (prevPickedPlaces.some((place) => place.id === id)) {
@@ -45,13 +51,27 @@ function App() {
       const place = AVAILABLE_PLACES.find((place) => place.id === id);
       return [place, ...prevPickedPlaces];
     });
+
+    // 브라우저에 데이터 저장 및 가져오기
+    const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || []; // 데이터 가져오기
+    if (storedIds.indexOf(id) === -1) { // 중복 확인
+      localStorage.setItem('selectedPlaces', JSON.stringify([id, ...storedIds])); // 데이터 저장
+    }
   }
 
+  // 장소 삭제
   function handleRemovePlace() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
     modal.current.close();
+
+    // 브라우저에 데이터 삭제
+    const storedIds = JSON.parse(localStorage.getItem('selectedPlaces')) || []; // 데이터 가져오기
+    localStorage.setItem(
+      'selectedPlaces',
+      JSON.stringify(storedIds.filter((id) => id !== selectedPlace.current))
+    );
   }
 
   return (
