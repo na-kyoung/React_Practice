@@ -1,15 +1,32 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function Login() {
   const email = useRef();
   const password = useRef();
+  const [emailIsInvalid, setEmailIsInvalid] = useState(false);
 
   function handleSubmit(event){
     event.preventDefault(); // 이벤트 발생 막음
 
-    const enteredEMail = email.current.value;
+    const enteredEmail = email.current.value;
     const enteredPassword = password.current.value;
-    console.log(enteredEMail, enteredPassword);
+    console.log('check value : ' + enteredEmail, enteredPassword);
+
+    // email.current.value = ''; // 초기화 (권장X)
+    // password.current.value = ''; // 초기화 (권장X)
+    // event.target.reset(); // 전체 초기화 (권장O)
+
+    // 검증
+    const emailCheck = enteredEmail.includes('@');
+
+    if(!emailCheck){
+      setEmailIsInvalid(true);
+      return;
+    } else {
+      setEmailIsInvalid(false);
+    }
+    
+    console.log('Sending HTTTP request...');
   }
 
   return (
@@ -19,9 +36,12 @@ export default function Login() {
       <div className="control-row">
         <div className="control no-margin">
           <label htmlFor="email">Email</label>
-          <input id="email" type="email" name="email"
+          <input id="email" name="email"
             ref={email}
           />
+          <div className="control-error">
+            {emailIsInvalid && <p>Please enter a valid email address.</p>}
+          </div>
         </div>
 
         <div className="control no-margin">

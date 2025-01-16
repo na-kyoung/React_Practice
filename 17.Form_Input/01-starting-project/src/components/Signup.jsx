@@ -9,6 +9,8 @@ export default function Signup() {
 
         data.acquisition = acquisitionChannel; // 체크박스 데이터 합치기
         console.log(data);
+
+        // event.target.reset(); // 초기화
     }
 
     return (
