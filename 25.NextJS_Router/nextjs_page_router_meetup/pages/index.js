@@ -1,5 +1,6 @@
 // our-domain.com/
 import MeetupList from "@/components/meetups/MeetupList";
+import { revalidatePath } from "next/cache";
 
 const DUMMY_MEETUPS = [
     {
@@ -18,13 +19,34 @@ const DUMMY_MEETUPS = [
     }
 ];
 
-function HomePage(){
-
-    return (
-        <>
-            <MeetupList meetups={DUMMY_MEETUPS}/>
-        </>
-    )
+function HomePage(props){
+    return <MeetupList meetups={props.meetups}/>;
 }
+
+// # getStaticProps
+// export async function getStaticProps(){
+//   // fetch data from API
+//   return {
+//     props: {
+//         meetups: DUMMY_MEETUPS
+//     },
+//     revalidate: 10 //10s
+//   };
+// }
+
+// # getServerSideProps
+export async function getServerSideProps(context){
+    const req = context.req;
+    const res = context.res;
+
+    // fetch data from API
+
+    return {
+        props: {
+            meetups: DUMMY_MEETUPS
+        }
+    };
+}
+
 
 export default HomePage;
