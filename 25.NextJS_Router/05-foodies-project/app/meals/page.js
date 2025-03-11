@@ -7,18 +7,16 @@ import { Suspense } from 'react';
 async function Meals() {
   // const meals = await getMeals();
   const meals = [
-    {'id':1, 'title':'Dummy Data 1'},
-    {'id':2, 'title':'Dummy Data 2'}
+    {'id':1, 'title':'Dummy Data 1', 'image':''},
+    {'id':2, 'title':'Dummy Data 2', 'image':''}
   ];
 
   setTimeout(function(){
     console.log("Fetching Data...");
-    // return <MealsGrid meals={meals} />;
   }, 5000);
 
   // throw new Error('Loading meals failed!');
-
-  return await <MealsGrid meals={meals} />;
+  return <MealsGrid meals={meals} />;
 }
 export default function MealsPage(){
   console.log('MealsPage');
