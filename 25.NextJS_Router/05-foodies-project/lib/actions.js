@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { saveMeal } from "./meals";
+import { revalidatePath } from "next/cache";
 
 function isInvalidText(text){
   return !text || text.trim() === '';
@@ -16,9 +17,6 @@ export async function shareMeal(prevState, formData){
     creator: formData.get('name'),
     creator_email: formData.get('email'),
   };
-
-  console.log(!meal.image);
-  console.log(meal.image.size === 0);
 
   if(
     isInvalidText(meal.title) || 
@@ -37,5 +35,8 @@ export async function shareMeal(prevState, formData){
 
   console.log(meal); // 서버측 터미널에 찍힘
   await saveMeal(meal); // 데이터 저장
+  // revalidatePath('/', 'layout'); // 유효성 재검사 - 모든 페이지 재검사
+  // revalidatePath('/meals', 'layout'); // 유효성 재검사 - 중첩된 페이지 모두 재검사
+  revalidatePath('/meals', 'page'); // 유효성 재검사 - 해당 페이지만 재검사
   redirect('/meals'); // meals 화면으로 돌아가기
 }
