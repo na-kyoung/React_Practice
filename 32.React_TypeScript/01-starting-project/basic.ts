@@ -71,3 +71,38 @@ Person2 = [{
   name: 'kwon',
   age: 22
 }]
+
+// Functions & Types
+function add(a: number, b:number): number {
+  return a + b;
+}
+
+function printOutput(value: any){
+  console.log(value);
+}
+
+// Generics
+const demoArray = [1, 2, 3]; // number[] 타입
+
+function insertAtBeginning(array: any[], value: any){
+  const newArray = [value, ...array];
+  return newArray;
+}
+
+const updatedArray = insertAtBeginning(demoArray, -1); // [-1, 1, 2, 3] - any[]
+updatedArray[0].split(''); // 에러가 안남
+
+function insertAtBeginning_Generics<T>(array: T[], value: T){
+  const newArray = [value, ...array];
+  return newArray;
+}
+
+const stringArray = insertAtBeginning_Generics(['a', 'b', 'c'], 'd'); // string[]
+stringArray[0].split('');
+
+const updatedArray_g = insertAtBeginning_Generics(demoArray, -1); // [-1, 1, 2, 3] - number[]
+// updatedArray_g[0].split(''); // error
+
+// Array<> : 배열 generic
+// let numbers: number[] = [1, 2, 3];
+let numbers: Array<number> = [1, 2, 3];
