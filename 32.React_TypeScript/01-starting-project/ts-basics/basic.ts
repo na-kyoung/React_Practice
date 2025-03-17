@@ -73,7 +73,7 @@ Person2 = [{
 }]
 
 // Functions & Types
-function add(a: number, b:number): number {
+function sum(a: number, b:number): number {
   return a + b;
 }
 

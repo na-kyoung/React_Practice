@@ -1,15 +1,15 @@
 {
-  "name": "01-starting-project",
+  "name": "ts-basics",
   "version": "1.0.0",
   "main": "no-typescript.js",
-  "dependencies": {
-    "typescript": "^5.8.2"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "typescript": "^5.8.2"
+  }
 }
